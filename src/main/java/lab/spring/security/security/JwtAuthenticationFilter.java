@@ -1,4 +1,4 @@
-package lab.spring.security.data.security;
+package lab.spring.security.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

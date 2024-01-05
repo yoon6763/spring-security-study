@@ -1,4 +1,4 @@
-package lab.spring.security.data.security;
+package lab.spring.security.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
