@@ -24,6 +24,7 @@ import java.util.List;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final UserService userService;
+    @Value("${jwt.secret}")
     private final String secretKey;
 
     @Override
