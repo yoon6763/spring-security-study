@@ -1,4 +1,4 @@
-package lab.spring.security.service;
+package lab.spring.security.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
