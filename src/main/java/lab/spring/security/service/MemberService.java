@@ -1,16 +1,21 @@
 package lab.spring.security.service;
 
+import lab.spring.security.data.Member;
+import lab.spring.security.data.dto.LoginDto;
+import lab.spring.security.data.dto.MemberInfoDto;
+import lab.spring.security.data.dto.MemberJoinDto;
 import lab.spring.security.data.dto.TokenInfo;
 import lab.spring.security.repository.MemberRepository;
 import lab.spring.security.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -21,7 +26,12 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public TokenInfo login(String id, String password) {
+    public TokenInfo login(LoginDto loginDto) {
+        log.info("memberService loginDto: {}", loginDto);
+
+        String id = loginDto.getId();
+        String password = loginDto.getPassword();
+
         // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
         // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id, password);
@@ -34,6 +44,11 @@ public class MemberService {
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
 
         return tokenInfo;
+    }
+
+    @Transactional
+    public Member join(MemberJoinDto memberJoinDto) {
+        return memberRepository.save(memberJoinDto.toEntity());
     }
 
 }
