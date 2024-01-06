@@ -14,7 +14,6 @@ import java.io.IOException;
 
 /**
  * 인증 실패시 결과를 처리해주는 로직을 가지고 있는 클래스
- * 예제 13.21, 예제 13.32
  */
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
@@ -34,7 +33,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setContentType("application/json");
         response.setCharacterEncoding("utf-8");
         response.getWriter().write(objectMapper.writeValueAsString(entryPointErrorResponse));
-        // 예제 13.23
+
         //response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }

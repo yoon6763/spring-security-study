@@ -3,9 +3,12 @@ package lab.spring.security.service;
 import lab.spring.security.config.security.JwtTokenProvider;
 import lab.spring.security.data.CommonResponse;
 import lab.spring.security.data.User;
+import lab.spring.security.data.dto.SignInRequestDto;
 import lab.spring.security.data.dto.SignInResultDto;
+import lab.spring.security.data.dto.SignUpRequestDto;
 import lab.spring.security.data.dto.SignUpResultDto;
 import lab.spring.security.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+@Slf4j
 @Service
 public class SignService {
-
-    private final Logger LOGGER = LoggerFactory.getLogger(SignService.class);
 
     public UserRepository userRepository;
     public JwtTokenProvider jwtTokenProvider;
@@ -31,57 +33,68 @@ public class SignService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public SignUpResultDto signUp(String id, String password, String name, String role) {
-        LOGGER.info("[getSignUpResult] 회원 가입 정보 전달");
-        User user;
-        if (role.equalsIgnoreCase("admin")) {
-            user = User.builder()
-                    .uid(id)
-                    .name(name)
-                    .password(passwordEncoder.encode(password))
-                    .roles(Collections.singletonList("ROLE_ADMIN"))
-                    .build();
-        } else {
-            user = User.builder()
-                    .uid(id)
-                    .name(name)
-                    .password(passwordEncoder.encode(password))
-                    .roles(Collections.singletonList("ROLE_USER"))
-                    .build();
-        }
+    public SignUpResultDto signUp(SignUpRequestDto signUpRequestDto) {
+        log.info("[getSignUpResult] 회원 가입 정보 전달");
+
+//        if (signInRequestDto.grole.equalsIgnoreCase("admin")) {
+//            user = User.builder()
+//                    .uid(id)
+//                    .name(name)
+//                    .password(passwordEncoder.encode(password))
+//                    .roles(Collections.singletonList("ROLE_ADMIN"))
+//                    .build();
+//        } else {
+//            user = User.builder()
+//                    .uid(id)
+//                    .name(name)
+//                    .password(passwordEncoder.encode(password))
+//                    .roles(Collections.singletonList("ROLE_USER"))
+//                    .build();
+//        }
+
+        User user = User.builder()
+                .uid(signUpRequestDto.getId())
+                .name(signUpRequestDto.getName())
+                .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
+                .roles(Collections.singletonList("ROLE_USER"))
+                .build();
 
         User savedUser = userRepository.save(user);
-        SignUpResultDto signUpResultDto = new SignInResultDto();
+        SignUpResultDto signUpResultDto = new SignUpResultDto();
 
-        LOGGER.info("[getSignUpResult] userEntity 값이 들어왔는지 확인 후 결과값 주입");
+        log.info("[getSignUpResult] userEntity 값이 들어왔는지 확인 후 결과값 주입");
         if (!savedUser.getName().isEmpty()) {
-            LOGGER.info("[getSignUpResult] 정상 처리 완료");
+            log.info("[getSignUpResult] 정상 처리 완료");
             setSuccessResult(signUpResultDto);
         } else {
-            LOGGER.info("[getSignUpResult] 실패 처리 완료");
+            log.info("[getSignUpResult] 실패 처리 완료");
             setFailResult(signUpResultDto);
         }
         return signUpResultDto;
     }
 
-    public SignInResultDto signIn(String id, String password) throws RuntimeException {
-        LOGGER.info("[getSignInResult] signDataHandler 로 회원 정보 요청");
-        User user = userRepository.getByUid(id);
-        LOGGER.info("[getSignInResult] Id : {}", id);
+    public SignInResultDto signIn(SignInRequestDto signInRequestDto) throws RuntimeException {
 
-        LOGGER.info("[getSignInResult] 패스워드 비교 수행");
+        String id = signInRequestDto.getId();
+        String password = signInRequestDto.getPassword();
+
+        log.info("[getSignInResult] signDataHandler 로 회원 정보 요청");
+        User user = userRepository.getByUid(id);
+        log.info("[getSignInResult] Id : {}", id);
+
+        log.info("[getSignInResult] 패스워드 비교 수행");
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new RuntimeException();
         }
-        LOGGER.info("[getSignInResult] 패스워드 일치");
+        log.info("[getSignInResult] 패스워드 일치");
 
-        LOGGER.info("[getSignInResult] SignInResultDto 객체 생성");
+        log.info("[getSignInResult] SignInResultDto 객체 생성");
         SignInResultDto signInResultDto = SignInResultDto.builder()
                 .token(jwtTokenProvider.createToken(String.valueOf(user.getUid()),
                         user.getRoles()))
                 .build();
 
-        LOGGER.info("[getSignInResult] SignInResultDto 객체에 값 주입");
+        log.info("[getSignInResult] SignInResultDto 객체에 값 주입");
         setSuccessResult(signInResultDto);
 
         return signInResultDto;

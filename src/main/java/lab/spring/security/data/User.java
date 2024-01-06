@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// 예제 13.5
 @Entity(name = "user_table")
 @Getter
 @Setter

@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-// 예제 13.17
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);

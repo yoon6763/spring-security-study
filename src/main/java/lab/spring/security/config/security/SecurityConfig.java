@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/test").permitAll()
                         // 그 외의 요청은 인증된 회원만 접근 가능
                         .anyRequest().authenticated())
+
 //                .and()
 //                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
 //                .and()

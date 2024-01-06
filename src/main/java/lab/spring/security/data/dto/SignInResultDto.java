@@ -2,7 +2,6 @@ package lab.spring.security.data.dto;
 
 import lombok.*;
 
-// 예제 13.30
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
