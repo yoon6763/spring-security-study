@@ -7,11 +7,16 @@ import lab.spring.security.data.dto.SignInRequestDto;
 import lab.spring.security.data.dto.SignInResultDto;
 import lab.spring.security.data.dto.SignUpRequestDto;
 import lab.spring.security.data.dto.SignUpResultDto;
+import lab.spring.security.exception.ErrorCode;
+import lab.spring.security.exception.sign.DuplicatedIdException;
+import lab.spring.security.exception.sign.SignErrorCode;
 import lab.spring.security.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +40,8 @@ public class SignService {
 
     public SignUpResultDto signUp(SignUpRequestDto signUpRequestDto) {
         log.info("[getSignUpResult] 회원 가입 정보 전달");
+
+        checkDuplicateId(signUpRequestDto.getId());
 
 //        if (signInRequestDto.grole.equalsIgnoreCase("admin")) {
 //            user = User.builder()
@@ -71,6 +78,13 @@ public class SignService {
             setFailResult(signUpResultDto);
         }
         return signUpResultDto;
+    }
+
+    private void checkDuplicateId(String id) {
+        User user = userRepository.getByUid(id);
+        if (user != null) {
+            throw new DuplicatedIdException();
+        }
     }
 
     public SignInResultDto signIn(SignInRequestDto signInRequestDto) throws RuntimeException {
