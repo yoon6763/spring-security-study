@@ -40,8 +40,13 @@ public class MemberService {
         // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
+        if (!authentication.isAuthenticated()) {
+            throw new IllegalArgumentException("잘못된 ID/PW 입니다.");
+        }
+
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+
 
         return tokenInfo;
     }
@@ -73,4 +78,10 @@ public class MemberService {
                 });
     }
 
+    public MemberInfoDto getMemberInfo(String id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID 입니다."));
+
+        return MemberInfoDto.of(member);
+    }
 }

@@ -91,7 +91,7 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token", e);
+            log.info("Invalid Token", e);
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT Token", e);
         } catch (UnsupportedJwtException e) {
