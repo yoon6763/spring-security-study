@@ -26,6 +26,8 @@ public class Member implements UserDetails {
 
     private String password;
 
+    private String nickname;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();

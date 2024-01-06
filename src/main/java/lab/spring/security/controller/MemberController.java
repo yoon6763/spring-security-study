@@ -2,6 +2,7 @@ package lab.spring.security.controller;
 
 import lab.spring.security.data.Member;
 import lab.spring.security.data.dto.LoginDto;
+import lab.spring.security.data.dto.MemberInfoDto;
 import lab.spring.security.data.dto.MemberJoinDto;
 import lab.spring.security.data.dto.TokenInfo;
 import lab.spring.security.service.MemberService;
@@ -29,7 +30,7 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<Member> join(@RequestBody MemberJoinDto memberJoinDto) {
+    public ResponseEntity<MemberInfoDto> join(@RequestBody MemberJoinDto memberJoinDto) {
         return ResponseEntity.ok(memberService.join(memberJoinDto));
     }
 

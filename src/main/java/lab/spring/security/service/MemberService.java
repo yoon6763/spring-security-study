@@ -47,8 +47,30 @@ public class MemberService {
     }
 
     @Transactional
-    public Member join(MemberJoinDto memberJoinDto) {
-        return memberRepository.save(memberJoinDto.toEntity());
+    public MemberInfoDto join(MemberJoinDto memberJoinDto) {
+        Member member = memberJoinDto.toEntity();
+
+        checkDuplicatedId(member);
+        checkDuplicatedNickname(member);
+        return MemberInfoDto.of(memberRepository.save(member));
+    }
+
+    // duplicated id check
+    private void checkDuplicatedId(Member member) {
+        memberRepository
+                .findById(member.getId())
+                .ifPresent(m -> {
+                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                });
+    }
+
+    // duplicated nickname check
+    private void checkDuplicatedNickname(Member member) {
+        memberRepository
+                .findByNickname(member.getNickname())
+                .ifPresent(m -> {
+                    throw new IllegalStateException("이미 존재하는 닉네임입니다.");
+                });
     }
 
 }
