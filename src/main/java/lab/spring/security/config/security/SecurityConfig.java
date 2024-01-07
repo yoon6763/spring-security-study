@@ -32,7 +32,9 @@ public class SecurityConfig {
 
                 .authorizeRequests(authorizeRequests -> authorizeRequests
                         // 토큰 발급 주소는 누구나 접근 가능
-                        .requestMatchers("/sign-api/sign-in", "/sign-api/sign-up",
+                        .requestMatchers(
+                                "/sign-api/sign-in",
+                                "/sign-api/sign-up",
                                 "/sign-api/exception").permitAll() // 가입 및 로그인 주소는 허용'
                         .requestMatchers(HttpMethod.GET, "/board/**").permitAll() // board로 시작하는 Get 요청은 허용
                         .requestMatchers("/test").permitAll()

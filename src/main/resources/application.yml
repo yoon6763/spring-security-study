@@ -13,7 +13,7 @@ spring:
   jpa:
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         #  show_sql: true
@@ -26,4 +26,4 @@ server:
 
 springboot:
   jwt:
-    secret: asd43brwktb45klmsfghsklfgmkl45lhkjfkfdgh56rtyh
+    secret: secretaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

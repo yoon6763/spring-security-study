@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -81,8 +82,8 @@ public class SignService {
     }
 
     private void checkDuplicateId(String id) {
-        User user = userRepository.getByUid(id);
-        if (user != null) {
+        Optional<User> user = userRepository.getByUid(id);
+        if (user.isPresent()) {
             throw new DuplicatedIdException();
         }
     }
@@ -93,7 +94,7 @@ public class SignService {
         String password = signInRequestDto.getPassword();
 
         log.info("[getSignInResult] signDataHandler 로 회원 정보 요청");
-        User user = userRepository.getByUid(id);
+        User user = userRepository.getByUid(id).orElseThrow(() -> new BadCredentialsException("존재하지 않는 아이디입니다."));
         log.info("[getSignInResult] Id : {}", id);
 
         log.info("[getSignInResult] 패스워드 비교 수행");
@@ -112,6 +113,15 @@ public class SignService {
         setSuccessResult(signInResultDto);
 
         return signInResultDto;
+    }
+
+    public User getUserFromToken(String token) throws BadRequestException {
+        log.info("[getUserFromToken] 토큰에서 회원 정보 추출");
+        User user = userRepository.getByUid(jwtTokenProvider.getUsername(token))
+                .orElseThrow(() -> new BadRequestException("존재하지 않는 회원입니다."));
+        log.info("[getUserFromToken] 회원 정보 추출 완료 : {}", user);
+        return userRepository.getByUid(jwtTokenProvider.getUsername(token))
+                .orElseThrow(() -> new BadRequestException("존재하지 않는 회원입니다."));
     }
 
     // 결과 모델에 api 요청 성공 데이터를 세팅해주는 메소드

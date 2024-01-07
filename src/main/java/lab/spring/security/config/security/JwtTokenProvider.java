@@ -49,9 +49,8 @@ public class JwtTokenProvider {
     @PostConstruct
     protected void init() {
         log.info("[init] JwtTokenProvider 내 secretKey 초기화 시작");
-        System.out.println(secretKey);
+        // base64 사용 x
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
-        System.out.println(secretKey);
         log.info("[init] JwtTokenProvider 내 secretKey 초기화 완료");
     }
 
@@ -77,17 +76,14 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         log.info("[getAuthentication] 토큰 인증 정보 조회 시작");
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUsername(token));
-        log.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails UserName : {}",
-                userDetails.getUsername());
-        return new UsernamePasswordAuthenticationToken(userDetails, "",
-                userDetails.getAuthorities());
+        log.info("[getAuthentication] 토큰 인증 정보 조회 완료, UserDetails UserName : {}", userDetails.getUsername());
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // JWT 토큰에서 회원 구별 정보 추출
     public String getUsername(String token) {
         log.info("[getUsername] 토큰 기반 회원 구별 정보 추출");
-        String info = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody()
-                .getSubject();
+        String info = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
         log.info("[getUsername] 토큰 기반 회원 구별 정보 추출 완료, info : {}", info);
         return info;
     }
@@ -100,7 +96,15 @@ public class JwtTokenProvider {
      */
     public String resolveToken(HttpServletRequest request) {
         log.info("[resolveToken] HTTP 헤더에서 Token 값 추출");
-        return request.getHeader("X-AUTH-TOKEN");
+        String bearerToken = request.getHeader("Authorization");
+
+        if (bearerToken == null) {
+            log.info("[resolveToken] HTTP 헤더에서 Token 값 추출 실패");
+            return null;
+        }
+
+        return bearerToken;
+//        return bearerToken.split(" ")[1];
     }
 
     // JWT 토큰의 유효성 + 만료일 체크
