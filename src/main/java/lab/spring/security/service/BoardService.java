@@ -17,4 +17,8 @@ public class BoardService {
         return boardRepository.save(boardRegisterDto.toEntity(author));
     }
 
+    public Board getBoard(Long id) {
+        return boardRepository.findById(id).orElseThrow();
+    }
+
 }

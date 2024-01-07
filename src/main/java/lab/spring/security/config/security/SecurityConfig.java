@@ -41,10 +41,11 @@ public class SecurityConfig {
                         // 그 외의 요청은 인증된 회원만 접근 가능
                         .anyRequest().authenticated())
 
-//                .and()
-//                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
-//                .and()
-//                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                // Deprecated 되어 빨간줄이 쳐져 있지만 컴파일 가능
+                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+                .and()
+                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .and()
 
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class) // JWT Token 필터를 id/password 인증 필터 이전에 추가

@@ -2,6 +2,7 @@ package lab.spring.security.controller;
 
 import lab.spring.security.data.Board;
 import lab.spring.security.data.User;
+import lab.spring.security.data.dto.BoardInfoDto;
 import lab.spring.security.data.dto.BoardRegisterDto;
 import lab.spring.security.service.BoardService;
 import lab.spring.security.service.SignService;
@@ -28,6 +29,13 @@ public class BoardController {
         User author = signService.getUserFromToken(token);
         log.info("[registerBoard] author : {}", author);
         return ResponseEntity.ok(boardService.save(author, boardRegisterDto));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BoardInfoDto> getBoard(@PathVariable Long id) {
+        log.info("[getBoard] id : {}", id);
+        log.info("[getBoard] board : {}", boardService.getBoard(id).toString());
+        return ResponseEntity.ok(BoardInfoDto.of(boardService.getBoard(id)));
     }
 
 }

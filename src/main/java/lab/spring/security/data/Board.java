@@ -2,15 +2,14 @@ package lab.spring.security.data;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Builder
+@ToString
 public class Board {
 
     @Id
