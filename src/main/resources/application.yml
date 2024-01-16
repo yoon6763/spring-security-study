@@ -19,6 +19,22 @@ spring:
         #  show_sql: true
         format_sql: true
         use_sql_comments: true # sql 과 함께 jpql 주석처리되어  콘솔창에 출력
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 375424656347-ki62a9rrh3m31i1fssrj9bk82horcncl.apps.googleusercontent.com
+            client-secret: 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
+            client-authentication-method: post
+            authorization-grant-type: authorization_code
+#            redirect-uri: http://localhost:8080/api/oauth2/callback/google
+            redirect-uri: http://127.0.0.1:8080/api/oauth2/callback/google
+
+            scope:
+              - email
+              - profile
+            client-name: Google
 
 
 server:

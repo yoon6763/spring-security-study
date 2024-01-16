@@ -10,8 +10,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.GenericFilterBean;
 
 @Configuration
 @EnableWebSecurity
@@ -19,6 +17,7 @@ import org.springframework.web.filter.GenericFilterBean;
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -35,9 +34,16 @@ public class SecurityConfig {
                         // 토큰 발급 주소는 누구나 접근 가능
                         .requestMatchers("/members/login").permitAll()
                         .requestMatchers("/members/join").permitAll()
-                        .requestMatchers("/test").permitAll()
+                        .requestMatchers("/members/google").permitAll()
+                        .requestMatchers("/members/test").authenticated()
                         // 그 외의 요청은 인증된 회원만 접근 가능
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
+
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+                                .userService(customOAuth2UserService))
+                        .successHandler(new OAuth2SuccessHandler(jwtTokenProvider)))
+
 
 //                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();

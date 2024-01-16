@@ -8,10 +8,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Builder
@@ -24,9 +26,16 @@ public class Member implements UserDetails {
     @Column(name = "member_id")
     private String id;
 
+    private String email;
+
     private String password;
 
     private String nickname;
+
+    private String provider;
+
+    private String providerId;
+
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
@@ -41,7 +50,7 @@ public class Member implements UserDetails {
 
     @Override
     public String getUsername() {
-        return id;
+        return email;
     }
 
     @Override
@@ -63,4 +72,5 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
