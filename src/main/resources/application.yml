@@ -19,18 +19,25 @@ spring:
         #  show_sql: true
         format_sql: true
         use_sql_comments: true # sql 과 함께 jpql 주석처리되어  콘솔창에 출력
-
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 375424656347-ki62a9rrh3m31i1fssrj9bk82horcncl.apps.googleusercontent.com
+            client-secret: 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
+            scope: email,profile
 
 server:
   port: 8080
 
-#jwt:
-#  secretKey: hv24736347897890hjdf34570j7890hjwr6789thw4w5678f6789g56789f234h756789ch6789d3456hbtygdhj
-#
-#  access:
-#    expiration: 3600000 # 1시간(60분) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
-#    header: Authorization
-#
-#  refresh:
-#    expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> 하루) * 14(2주))
-#    header: Authorization-refresh
+jwt:
+  secretKey: v345ertvyh3r5yertybn58ynetn67herdg567gfr56gv35u35bng45gv2435
+
+  access:
+    expiration: 3600000 # 1시간(60분) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
+    header: Authorization
+
+  refresh:
+    expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> 하루) * 14(2주))
+    header: Authorization-refresh
