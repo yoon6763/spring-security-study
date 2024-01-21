@@ -1,9 +1,6 @@
 package lab.spring.security.data.dto;
 
 import lab.spring.security.data.OAuth2UserInfo;
-
-import java.util.Map;
-
 import java.util.Map;
 
 public class GoogleOAuth2UserInfo extends OAuth2UserInfo {

@@ -27,6 +27,7 @@ spring:
             client-id: 375424656347-ki62a9rrh3m31i1fssrj9bk82horcncl.apps.googleusercontent.com
             client-secret: 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
             scope: email,profile
+            redirect-uri: http://127.0.0.1:8080/api/oauth2/callback/google
 
 server:
   port: 8080
