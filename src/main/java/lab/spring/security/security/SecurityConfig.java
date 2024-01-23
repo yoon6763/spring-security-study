@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/members/join").permitAll()
                         .requestMatchers("/test").permitAll()
                         // 그 외의 요청은 인증된 회원만 접근 가능
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
 
 //                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();

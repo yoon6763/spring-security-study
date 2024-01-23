@@ -20,6 +20,16 @@ spring:
         format_sql: true
         use_sql_comments: true # sql 과 함께 jpql 주석처리되어  콘솔창에 출력
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 375424656347-ki62a9rrh3m31i1fssrj9bk82horcncl.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
 
 server:
   port: 8080
