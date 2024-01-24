@@ -1,5 +1,8 @@
 package lab.spring.security.security;
 
+import lab.spring.security.handler.MyAuthenticationFailureHandler;
+import lab.spring.security.handler.MyAuthenticationSuccessHandler;
+import lab.spring.security.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +22,7 @@ import org.springframework.web.filter.GenericFilterBean;
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -39,6 +43,14 @@ public class SecurityConfig {
                         // 그 외의 요청은 인증된 회원만 접근 가능
                         .anyRequest().permitAll())
 
+//                .oauth2Login()
+//                .userInfoEndpoint()
+//                .userService(customOAuth2UserService)
+//                .and()
+//                .successHandler(new MyAuthenticationSuccessHandler())
+//                .failureHandler(new MyAuthenticationFailureHandler())
+//
+//                .and()
 //                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

@@ -24,9 +24,12 @@ spring:
     oauth2:
       client:
         registration:
-          google:
+         google:
             client-id: 375424656347-ki62a9rrh3m31i1fssrj9bk82horcncl.apps.googleusercontent.com
             client-secret: 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
+            redirect-uri: http://127.0.0.1:8080/api/oauth2/callback/google
+            token-uri: https://oauth2.googleapis.com/token
+            resource-uri: https://www.googleapis.com/oauth2/v2/userinfo
             scope:
               - email
               - profile
