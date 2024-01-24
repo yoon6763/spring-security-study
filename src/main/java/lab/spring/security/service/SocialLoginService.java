@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class SocialLoginService {
 
-    private final Environment env;
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
