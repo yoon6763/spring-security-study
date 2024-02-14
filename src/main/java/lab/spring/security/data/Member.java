@@ -28,6 +28,8 @@ public class Member implements UserDetails {
 
     private String nickname;
 
+    private String email;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<>();

@@ -11,11 +11,13 @@ import lombok.Getter;
 public class MemberInfoDto {
     private String id;
     private String nickname;
+    private String email;
 
     public static MemberInfoDto of(Member member) {
         return MemberInfoDto.builder()
                 .id(member.getId())
                 .nickname(member.getNickname())
+                .email(member.getEmail())
                 .build();
     }
 }
